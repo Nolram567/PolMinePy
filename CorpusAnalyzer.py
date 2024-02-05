@@ -1,7 +1,6 @@
 import spacy
 
 def guiraud_index(text: list):
-    # Konvertieren der Textliste in einen String
     nlp = spacy.load("de_core_news_sm")
     nlp.max_length = 10000000
     text = " ".join(text)
