@@ -6,15 +6,15 @@ from pathlib import Path
 import CorpusAnalyzer
 
 
-def create_partition(lp: range or int or list,
+def create_partition(lp: range or int or list = range(1, 20),
                      s: range or int or list or float = float("inf")) -> dict:
     partition = {}
     if type(lp) == range:
         for i in lp:
             for j, entry in enumerate(Path(f"{f'0{i}' if i<10 else i}").iterdir()):
-                partition[entry.name] = ET.parse(f"{f'0{i}' if i<10 else i}/{entry.name}")
                 if j == s:
                     break
+                partition[entry.name] = ET.parse(f"{f'0{i}' if i<10 else i}/{entry.name}")
     elif type(lp) == list:
         pass
     else:
@@ -83,7 +83,7 @@ def kwic(corpus: dict or str, keyword: str, l: int= 5, r: int= 5) -> list:
                 context[-1].append(temp[ki:len(temp) - 1])
     return context
 
-def create_lemmatized_corpus(l: list) -> list:
+def create_cleaned_corpus(l: list) -> list:
     lc = []
     for entry in l:
         lc = lc + entry.split(" ")
@@ -96,11 +96,14 @@ def create_lemmatized_corpus(l: list) -> list:
 
 if __name__ == "__main__":
 
-    test = create_partition(range(17, 18), 1)
-    l = get_speaches_from_politican(test, "Angela Merkel")
-    print(l)
-    print(create_lemmatized_corpus(l))
+    test = create_partition()
 
+    #print(test)
+
+    l = get_speaches_from_politican(test, "Angela Merkel")
+    am = create_cleaned_corpus(l)
+    print(CorpusAnalyzer.guiraud_index_lemmatized(l))
+    print(CorpusAnalyzer.calculate_guiraud_naive(l))
 
     #print([entry for entry in ("hdafe", "chuieafg", "-", ".-)", "test") if not all(char in string.punctuation for char in entry)])
     #print(l)
