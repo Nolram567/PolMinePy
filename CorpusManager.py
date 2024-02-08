@@ -2,7 +2,7 @@ import string
 import xml.etree.ElementTree as ET
 import os
 from pathlib import Path
-
+import matplotlib.pyplot as plt
 import CorpusAnalyzer
 
 
@@ -45,44 +45,6 @@ def get_speaches_from_party(corpus: dict, party: str) -> list:
             for a in sp_tag.findall((".//p")):
                 speaches.append(a.text)
     return speaches
-
-def kwic(corpus: dict or str, keyword: str, l: int= 5, r: int= 5) -> list:
-    context = []
-
-    if type(corpus) == dict:
-        for e in corpus.keys():
-            root = corpus[e]
-            for sp_tag in root.findall(".//sp"):
-                for a in sp_tag.findall((".//p")):
-                    ki = a.text.lower().index(keyword.lower())
-                    if ki:
-                        temp = a.text.split(" ")
-                        temp = [entry.lower() for entry in temp if not entry.contains(string.punctuation)]
-                        try:
-                            context.append(temp[ki-l:ki])
-                        except Exception:
-                            context.append(temp[0:ki])
-                        try:
-                            context[-1].append(temp[ki:ki+r+1])
-                        except Exception:
-                            context[-1].append(temp[ki:len(temp)-1])
-    if type(corpus) == str:
-        temp = corpus.split(" ")
-        temp = [entry.lower() for entry in temp if not all(char in string.punctuation for char in entry)]
-        ki = temp.index(keyword.lower())
-        print(temp)
-        print(ki)
-        if ki:
-            if ki-l >= 0:
-                context.append(temp[ki-l:ki])
-            else:
-                context.append(temp[0:ki])
-            try:
-                context[-1] = context[-1] + (temp[ki:ki + r+1])
-            except Exception:
-                context[-1].append(temp[ki:len(temp) - 1])
-    return context
-
 def create_cleaned_corpus(l: list) -> list:
     lc = []
     for entry in l:
@@ -96,16 +58,43 @@ def create_cleaned_corpus(l: list) -> list:
 
 if __name__ == "__main__":
 
-    test = create_partition()
+    full_corpus = create_partition()
 
-    #print(test)
 
-    l = get_speaches_from_politican(test, "Angela Merkel")
-    am = create_cleaned_corpus(l)
-    print(CorpusAnalyzer.guiraud_index_lemmatized(l))
-    print(CorpusAnalyzer.calculate_guiraud_naive(l))
+
+    bundeskanzler_liste = [
+        "Konrad Adenauer",
+        "Ludwig Erhard",
+        "Kurt Georg Kiesinger",
+        "Willy Brandt",
+        "Helmut Schmidt",
+        "Helmut Kohl",
+        "Gerhard Schröder",
+        "Angela Merkel",
+        "Olaf Scholz"
+    ]
+
+    bk_ttr = {}
+
+    for e in bundeskanzler_liste:
+        l = get_speaches_from_politican(full_corpus, e)
+        am = create_cleaned_corpus(l)
+        bk_ttr[e] = CorpusAnalyzer.guiraud_index_lemmatized(l)
 
     #print([entry for entry in ("hdafe", "chuieafg", "-", ".-)", "test") if not all(char in string.punctuation for char in entry)])
     #print(l)
     #print(kwic(l, "ich"))
 
+
+    # Sortieren des Dictionaries nach Werten in absteigender Reihenfolge
+    sorted_data = dict(sorted(bk_ttr.items(), key=lambda item: item[1], reverse=True))
+
+    # Erstellen des Histogramms
+    plt.figure(figsize=(10, 6))
+    plt.bar(sorted_data.keys(), sorted_data.values(), color='skyblue')
+    plt.xlabel('Bundeskanzler')
+    plt.ylabel('TTR')
+    plt.title('TTR der Bundeskanzler')
+    plt.xticks(rotation=45)  # Dreht die X-Achsen-Beschriftungen, falls sie zu lang sind
+    plt.savefig("TTR_bundeskanzler")
+    plt.show()
