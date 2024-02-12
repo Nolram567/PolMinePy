@@ -59,4 +59,4 @@ if __name__ == "__main__":
     vis = gensimvis.prepare(lda_model, corpus, dictionary)
 
     # Speichern der Visualisierung als HTML-Datei
-    pyLDAvis.save_html(vis, 'lda_10_topics.html')
+    pyLDAvis.save_html(vis, 'lda_olaf-scholz.html')
