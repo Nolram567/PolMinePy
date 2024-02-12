@@ -89,7 +89,6 @@ if __name__ == "__main__":
     # Sortieren des Dictionaries nach Werten in absteigender Reihenfolge
     sorted_data = dict(sorted(bk_ttr.items(), key=lambda item: item[1], reverse=True))
 
-    # Erstellen des Histogramms
     plt.figure(figsize=(10, 6))
     plt.bar(sorted_data.keys(), sorted_data.values(), color='skyblue')
     plt.xlabel('Bundeskanzler')
