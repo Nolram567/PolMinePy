@@ -2,7 +2,7 @@ import string
 import spacy
 
 
-def guiraud_index_lemmatized(text: list):
+def guiraud_index_lemmatized(text: list) -> float:
     nlp = spacy.load("de_core_news_sm")
     nlp.max_length = 10000000
     text = " ".join(text)
@@ -11,8 +11,7 @@ def guiraud_index_lemmatized(text: list):
     print(lemmatized_words)
     return len(set(lemmatized_words)) / len(lemmatized_words) if lemmatized_words else 0
 
-
-def calculate_guiraud_naive(text: list):
+def calculate_guiraud_naive(text: list) -> float:
     tokens = "".join(text).split()
 
     types = set(tokens)
@@ -20,7 +19,6 @@ def calculate_guiraud_naive(text: list):
     ttr = len(types) / len(tokens)
 
     return ttr
-
 
 def kwic(corpus: dict or str, keyword: str, l: int = 5, r: int = 5) -> list:
     context = []
