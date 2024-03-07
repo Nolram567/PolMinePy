@@ -59,7 +59,7 @@ def get_speaches_from_politican(corpus: dict, p: str, id: str = "name", aslist: 
          aslist: Hier kann der Rückgabedatentyp modifiziert werden. Der Standardwert ist eine Liste. (Die Alternativen sind
          noch nicht implementiert.)
     Return:
-        Eine Liste mit allen Einzeläußerungen ohne Metadaten.
+        Eine Liste mit allen Einzeläußerungen der spezifizierten Person ohne Metadaten.
     """
     speaches = []
     for e in corpus.keys():
@@ -77,6 +77,8 @@ def get_speaches_from_party(corpus: dict, party: str) -> list:
     Args:
         corpus: Das Korpus oder die Partition.
         party: Der Name der Partei.
+    Return:
+        Eine Liste mit allen Einzeläußerungen von Mitglieder der spezifizierten Partei ohne Metadaten.
     """
     speaches = []
     for e in corpus.keys():
