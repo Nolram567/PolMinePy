@@ -2,7 +2,7 @@ import string
 import spacy
 import math
 
-def guiraud_index_lemmatized(text: list) -> float:
+def calculate_guiraud_lemmatized(text: list) -> float:
     """
     Diese Funktion lemmatisiert den übergebenen Text, bzw. die Liste mit den Aussagen, die zuvor z. B. mit der Funktion
     get_speaches_from_politican() erstellt und/oder der mit create_cleaned_corpus() bereinigt wurde.
