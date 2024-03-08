@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
 
 
-'''    bundeskanzler_liste = [
+    '''bundeskanzler_liste = [
         "Konrad Adenauer",
         "Ludwig Erhard",
         "Kurt Georg Kiesinger",
@@ -135,12 +135,11 @@ if __name__ == "__main__":
         l = get_speaches_from_politican(full_corpus, e)
         am = create_cleaned_corpus(l)
         bk_ttr[e] = CorpusAnalyzer.guiraud_index_lemmatized(l)
-
+'''
     #print([entry for entry in ("hdafe", "chuieafg", "-", ".-)", "test") if not all(char in string.punctuation for char in entry)])
-    #print(l)
-    #print(kwic(l, "ich"))
-
-
+    #test = get_speaches_from_politican(full_corpus, "Konrad Adenauer")
+    print(CorpusAnalyzer.kwic(" ".join(get_speaches_from_politican(full_corpus, "Konrad Adenauer")), keyword="Problem"))
+    '''
     # Sortieren des Dictionaries nach Werten in absteigender Reihenfolge
     sorted_data = dict(sorted(bk_ttr.items(), key=lambda item: item[1], reverse=True))
 
@@ -151,5 +150,4 @@ if __name__ == "__main__":
     plt.title('TTR der Bundeskanzler')
     plt.xticks(rotation=45)
     #plt.savefig("TTR_bundeskanzler")
-    plt.show()
-'''
+    plt.show()'''
