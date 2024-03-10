@@ -112,7 +112,7 @@ def create_cleaned_corpus(l: list) -> list:
 
 if __name__ == "__main__":
 
-    full_corpus = create_partition(range(1,2))
+    full_corpus = create_partition()
     print(full_corpus)
 
     bundeskanzler_liste = [
