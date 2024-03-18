@@ -14,7 +14,7 @@ def preprocess_text(text):
     doc = nlp(text)
     lemmatized = [token.lemma_ for token in doc if token.lemma_ not in stop_words]
 
-    #cleaned_text = [word for word in lemmatized if word.isalpha()]
+    cleaned_text = [word for word in lemmatized if word.isalpha()]
 
     return cleaned_text
 
