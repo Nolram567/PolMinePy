@@ -87,6 +87,7 @@ def get_speaches_from_party(corpus: dict, party: str) -> list:
             for a in sp_tag.findall((".//p")):
                 speaches.append(a.text)
     return speaches
+
 def create_cleaned_corpus(l: list) -> list:
     """
     Befreit eine Liste mit Strings, die zuvor z. B. mit get_speaches_from_party() oder get_speaches_from_politican()
@@ -107,7 +108,6 @@ def create_cleaned_corpus(l: list) -> list:
         if any(char in string.punctuation for char in entry):
            lc[i]= entry.translate(translator)
     return lc
-
 
 
 if __name__ == "__main__":
