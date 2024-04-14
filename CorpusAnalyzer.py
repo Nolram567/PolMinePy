@@ -19,7 +19,7 @@ def calculate_guiraud_lemmatized(text: list) -> float:
     text = " ".join(text)
     doc = nlp(text)
     lemmatized_words = [token.lemma_.lower() for token in doc if token.text.isalnum()]
-    print(lemmatized_words)
+    #print(lemmatized_words)
     return len(set(lemmatized_words)) / math.sqrt(len(lemmatized_words)) if lemmatized_words else 0
 
 def calculate_guiraud_naive(text: list) -> float:
@@ -82,8 +82,8 @@ def kwic(corpus: str, keyword: str, l: int = 5, r: int = 5) -> list:
         temp = corpus.split(" ")
         temp = [entry.lower() for entry in temp if not all(char in string.punctuation for char in entry)]
         ki = temp.index(keyword.lower())
-        print(temp)
-        print(ki)
+        #print(temp)
+        #print(ki)
         if ki:
             if ki - l >= 0:
                 context.append(temp[ki - l:ki])
