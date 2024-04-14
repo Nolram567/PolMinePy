@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import matplotlib.pyplot as plt
 import CorpusAnalyzer
+import spacy
 
 def create_partition(lp: range or int or list = range(1, 20),
                      s: range or int or list or float = float("inf")) -> dict:
@@ -26,17 +27,17 @@ def create_partition(lp: range or int or list = range(1, 20),
     partition = {}
     if type(lp) == range:
         for i in lp:
-            for j, entry in enumerate(Path(f"{f'0{i}' if i<10 else i}").iterdir()):
+            for j, entry in enumerate(Path(f"{f'data/0{i}' if i < 10 else f'data/{i}'}").iterdir()):
                 if j == s:
                     break
-                partition[entry.name] = ET.parse(f"{f'0{i}' if i<10 else i}/{entry.name}")
+                partition[entry.name] = ET.parse(f"{f'data/0{i}' if i < 10 else f'data/{i}'}/{entry.name}")
     elif type(lp) == list:
         pass
     else:
-        for j, entry in enumerate(Path(f"{f'0{lp}' if lp < 10 else lp}").iterdir()):
+        for j, entry in enumerate(Path(f"{f'data/0{lp}' if lp < 10 else f'data/{lp}'}").iterdir()):
             if j == s:
                 break
-            partition[entry.name] = ET.parse(f"{f'0{lp}' if lp < 10 else lp}/{entry.name}")
+            partition[entry.name] = ET.parse(f"{f'data/0{lp}' if lp < 10 else f'data/{lp}'}/{entry.name}")
 
     return partition
 
@@ -109,6 +110,64 @@ def create_cleaned_corpus(l: list) -> list:
            lc[i]= entry.translate(translator)
     return lc
 
+def tokenize_sentences(corpus: dict) -> list:
+    """
+    Mit dieser Funktion kann man alle Reden eines Korpus oder einer Korpuspartition satzweise tokenisiert extrahieren.
+    Das Korpus sollte zuvor mit der Funktion create_partition() erstellt wurden sein oder konform zur Struktur des
+    Rückgabe-Dictionaries sein.
+
+    Args:
+        corpus: Das Korpus oder die Partition.
+    Return:
+        Eine Liste mit allen Einzeläußerungen satzweise tokenisiert in einer Liste.
+    """
+
+    sentences = []
+    nlp = spacy.load("de_core_news_sm")
+    for e in corpus.keys():
+        root = corpus[e]
+        for sp_tag in root.findall((".//sp")):
+            for a in sp_tag.findall((".//p")):
+                doc = nlp(a.text)
+                for sent in doc.sents:
+                    sentences.append(sent.text)
+    return sentences
+
+def tokenize_paragraphs(corpus: dict, t: bool = False) -> list:
+    """
+    Mit dieser Funktion kann man alle Absätze eines Korpus oder einer Korpuspartition Absatzweise tokenisiert extrahieren.
+    Das Korpus sollte zuvor mit der Funktion create_partition() erstellt wurden sein oder konform zur Struktur des
+    Rückgabe-Dictionaries sein.
+
+    Args:
+        corpus: Das Korpus oder die Partition.
+        t: Wenn dieser Parameter wahr ist, werden die einzelnen Absätze satzweise tokenisiert.
+    Return:
+        Eine Liste mit allen Einzeläußerungen absatzweise tokenisiert in einer Liste.
+    """
+
+    sentences = []
+    nlp = spacy.load("de_core_news_sm")
+    for e in corpus.keys():
+        root = corpus[e]
+        for sp_tag in root.findall((".//sp")):
+            if not t:
+                for a in sp_tag.findall((".//p")):
+                    sentences.append(a.text)
+            if t:
+                pass
+    return sentences
+
+def normalize_case(corpus: list) -> list:
+    """
+    Mit dieser Funktion kann man alle Strings einer Liste zu Kleinschreibung normalisieren.
+
+    Args:
+        corpus: Die Liste mit strings.
+    Return:
+        Die nach Kleinschreibung normalisierten Strings in corpus.
+    """
+    return [e.lower() for e in corpus]
 
 if __name__ == "__main__":
 
@@ -136,7 +195,7 @@ if __name__ == "__main__":
 
     #print([entry for entry in ("hdafe", "chuieafg", "-", ".-)", "test") if not all(char in string.punctuation for char in entry)])
     #test = get_speaches_from_politican(full_corpus, "Konrad Adenauer")
-    print(CorpusAnalyzer.kwic(" ".join(get_speaches_from_politican(full_corpus, "Konrad Adenauer")), keyword="Problem"))
+    #print(CorpusAnalyzer.kwic(" ".join(get_speaches_from_politican(full_corpus, "Konrad Adenauer")), keyword="Problem"))
 
     # Sortieren des Dictionaries nach Werten in absteigender Reihenfolge
     sorted_data = dict(sorted(bk_ttr.items(), key=lambda item: item[1], reverse=True))
