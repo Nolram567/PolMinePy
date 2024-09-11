@@ -89,6 +89,30 @@ def get_speaches_from_party(corpus: dict, party: str) -> list:
                 speaches.append(a.text)
     return speaches
 
+def get_speaches_containing_keyword(corpus: dict, keyword: str or list) -> list:
+    speaches = []
+    for e in corpus.keys():
+        root = corpus[e]
+        for sp_tag in root.findall(f".//sp"):
+            temp = []
+            for a in sp_tag.findall((".//p")):
+                temp.append(a.text)
+            if keyword in " ".join(temp):
+                speaches.append(" ".join(temp))
+    return speaches
+
+def get_protocols_containing_keyword(corpus: dict, keyword: str or list) -> list:
+    protocols = []
+    for e in corpus.keys():
+        root = corpus[e]
+        for sp_tag in root.findall(f".//sp"):
+            temp = []
+            for a in sp_tag.findall((".//p")):
+                temp.append(a.text)
+            if keyword in " ".join(temp):
+                protocols.append(e)
+    return protocols
+
 def create_cleaned_corpus(l: list) -> list:
     """
     Befreit eine Liste mit Strings, die zuvor z. B. mit get_speaches_from_party() oder get_speaches_from_politican()
