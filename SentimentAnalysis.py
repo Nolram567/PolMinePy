@@ -6,7 +6,7 @@ def calculate_polarity(p: list) -> float:
     """
     Diese Funktion nutzt GBERT, um die Sentiment-Polarität für eine Liste von Strings (wie Absätze oder Sätze) zu berechnen.
     Sie teilt die Liste `p` in Unterlisten von maximal 100 Einträgen auf, berechnet die Sentiments für jede Unterliste
-    und kombiniert die Ergebnisse. Diese Unterteilung der Liste ist notwendig, da es bei einigen Rechner, abhängig von
+    und kombiniert die Ergebnisse. Diese Unterteilung der Liste ist notwendig, da es bei einigen Rechnern, abhängig von
     der Hardware, nicht genügend Hauptspeicher vorhanden ist.
 
     Args:
@@ -16,7 +16,7 @@ def calculate_polarity(p: list) -> float:
     """
     model = SentimentModel()
 
-    ''' Aufteilung der Absatz-Liste in chunks, da es aber ~1000 Einträgen zu einem Memory-Overflow kommt. Die chuncks
+    ''' Aufteilung der Absatz-Liste in chunks, da es aber ~1000 Einträgen zu einem Memory-Overflow kommt. Die chunks
      werden separat berechnet.'''
     chunk_size = 100
     chunks = [p[i:i + chunk_size] for i in range(0, len(p), chunk_size)]
@@ -41,7 +41,7 @@ def calculate_polarity(p: list) -> float:
 
 def filter_topic(corpus: list, t: list) -> list:
     """
-    Die Funktion filtert corpus, indem sie alle Einträge entfernt, die keinen String aus t enthalten.
+    Diese Funktion filtert die Liste corpus, indem sie alle Einträge entfernt, die keinen String aus t enthalten.
 
     Args:
          corpus: Die Liste mit Strings, die gefiltert werden soll.
