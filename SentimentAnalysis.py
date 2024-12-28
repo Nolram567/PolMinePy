@@ -49,7 +49,7 @@ def filter_topic(corpus: list, t: list) -> list:
     Return:
         Die gefilterte Liste.
     """
-    return [text for text in corpus if any(begriff in text for begriff in t)]
+    return [text for text in corpus if any(term in text for term in t)]
 
 
 if __name__ == '__main__':
